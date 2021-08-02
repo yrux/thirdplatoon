@@ -6165,7 +6165,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       categoryCount: 0,
       vendorsCount: 0,
       ordersCount: 0,
-      user: {}
+      user: {},
+      month_sales: {},
+      year: '',
+      payments: {}
     };
   },
   methods: {
@@ -6192,8 +6195,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 _this.categoryCount = _data.categoryCount;
                 _this.vendorsCount = _data.vendorsCount;
                 _this.ordersCount = _data.ordersCount, _this.user = _data.user;
+                _this.month_sales = _data.month_sales;
+                _this.year = _data.year;
+                _this.payments = _data.payments;
 
-              case 7:
+              case 10:
               case "end":
                 return _context.stop();
             }
@@ -6203,43 +6209,83 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     }
   },
   mounted: function mounted() {
-    this.getSummary();
-    var data = {
-      labels: ['Red', 'Blue', 'Yellow'],
-      datasets: [{
-        label: 'Categories',
-        data: [300, 50, 100],
-        backgroundColor: ['rgb(255, 99, 132)', 'rgb(54, 162, 235)', 'rgb(255, 205, 86)'],
-        hoverOffset: 4
-      }]
-    };
-    var config = {
-      type: 'pie',
-      data: data
-    };
-    var ctx1 = document.getElementById('myChart1');
-    var myChart1 = new chart_js_auto__WEBPACK_IMPORTED_MODULE_2__["default"](ctx1, config);
-    var ctx = document.getElementById('myChart');
-    var myChart = new chart_js_auto__WEBPACK_IMPORTED_MODULE_2__["default"](ctx, {
-      type: 'bar',
-      data: {
-        labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-        datasets: [{
-          label: 'Yearly Sales',
-          data: [12, 19, 3, 5, 2, 3],
-          backgroundColor: ['rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(255, 206, 86, 0.2)', 'rgba(75, 192, 192, 0.2)', 'rgba(153, 102, 255, 0.2)', 'rgba(255, 159, 64, 0.2)'],
-          borderColor: ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)', 'rgba(75, 192, 192, 1)', 'rgba(153, 102, 255, 1)', 'rgba(255, 159, 64, 1)'],
-          borderWidth: 1
-        }]
-      },
-      options: {
-        scales: {
-          y: {
-            beginAtZero: true
+    var _this2 = this;
+
+    return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2() {
+      var payment_labels, payment_colors, payment_counts, _default_colors, p, data, config, ctx1, myChart1, ctx, _labels, _sales, q, myChart;
+
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee2$(_context2) {
+        while (1) {
+          switch (_context2.prev = _context2.next) {
+            case 0:
+              _context2.next = 2;
+              return _this2.getSummary();
+
+            case 2:
+              payment_labels = [], payment_colors = [], payment_counts = [];
+              _default_colors = ['rgb(255, 99, 132)', 'rgb(54, 162, 235)', 'rgb(255, 205, 86)', 'rgba(75, 192, 192, 1)'];
+
+              for (p = 0; p < _this2.payments.length; p++) {
+                payment_labels.push(_this2.payments[p].payment_status);
+                payment_colors.push(_default_colors[p]);
+                payment_counts.push(_this2.payments[p].total_orders);
+              }
+
+              data = {
+                labels: payment_labels,
+                datasets: [{
+                  label: 'Payment Statuses in Orders Counts',
+                  data: payment_counts,
+                  backgroundColor: payment_colors,
+                  hoverOffset: payment_colors.length
+                }]
+              };
+              config = {
+                type: 'pie',
+                data: data
+              };
+              ctx1 = document.getElementById('myChart1');
+              myChart1 = new chart_js_auto__WEBPACK_IMPORTED_MODULE_2__["default"](ctx1, config);
+              ctx = document.getElementById('myChart');
+              _labels = Object.keys(_this2.month_sales);
+              _sales = [];
+
+              for (q in _this2.month_sales) {
+                if (_this2.month_sales[q]) {
+                  _sales.push(_this2.month_sales[q].total_orders);
+                } else {
+                  _sales.push(0);
+                }
+              }
+
+              myChart = new chart_js_auto__WEBPACK_IMPORTED_MODULE_2__["default"](ctx, {
+                type: 'bar',
+                data: {
+                  labels: _labels,
+                  datasets: [{
+                    label: 'Yearly Sales ' + _this2.year,
+                    data: _sales,
+                    backgroundColor: ['rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(255, 206, 86, 0.2)', 'rgba(75, 192, 192, 0.2)', 'rgba(153, 102, 255, 0.2)', 'rgba(255, 159, 64, 0.2)', 'rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(255, 206, 86, 0.2)', 'rgba(75, 192, 192, 0.2)', 'rgba(153, 102, 255, 0.2)', 'rgba(255, 159, 64, 0.2)'],
+                    borderColor: ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)', 'rgba(75, 192, 192, 1)', 'rgba(153, 102, 255, 1)', 'rgba(255, 159, 64, 1)', 'rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)', 'rgba(75, 192, 192, 1)', 'rgba(153, 102, 255, 1)', 'rgba(255, 159, 64, 1)'],
+                    borderWidth: 1
+                  }]
+                },
+                options: {
+                  scales: {
+                    y: {
+                      beginAtZero: true
+                    }
+                  }
+                }
+              });
+
+            case 14:
+            case "end":
+              return _context2.stop();
           }
         }
-      }
-    });
+      }, _callee2);
+    }))();
   }
 });
 
